@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zenbakiak: los números en euskera</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e8f3ff;--card:#ffffff;--ink:#14213d;--mut:#5b6b8c;--sun:#ffc93c;--mint:#1fb5a5;--ok:#12805c;--okbg:#d8f5e8;--bad:#c92a4b;--badbg:#ffe1e7;--key:#dbe9ff;--line:#c4d6f2;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f1a30;--card:#1a2744;--ink:#f2f6ff;--mut:#a3b3d6;--sun:#ffd25e;--mint:#3fd6c5;--ok:#6ee7b0;--okbg:#14382f;--bad:#ff8aa1;--badbg:#42202a;--key:#26375d;--line:#33466f}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0f1a30;--card:#1a2744;--ink:#f2f6ff;--mut:#a3b3d6;--sun:#ffd25e;--mint:#3fd6c5;--ok:#6ee7b0;--okbg:#14382f;--bad:#ff8aa1;--badbg:#42202a;--key:#26375d;--line:#33466f}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Baloo 2",system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:500;min-height:100%}
+main{max-width:480px;margin:0 auto;padding:16px 16px 32px}
+h1{font-size:1.6rem;font-weight:800;margin:4px 0 12px;text-align:center}
+.path{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.dot{width:46px;height:46px;border-radius:50%;border:3px solid var(--line);background:var(--card);color:var(--ink);font:800 1.1rem "Baloo 2",system-ui,sans-serif;cursor:pointer}
+.dot[disabled]{opacity:.45;cursor:not-allowed}
+.dot.on{background:var(--sun);border-color:var(--ink);color:#14213d}
+.dot.done{border-color:var(--mint)}
+.card{background:var(--card);border-radius:22px;padding:20px 16px;border:2px solid var(--line)}
+.meta{display:flex;justify-content:space-between;color:var(--mut)}
+.bar{height:10px;background:var(--key);border-radius:9px;margin:8px 0 16px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--mint);width:0;transition:width .3s}
+.task{text-align:center;font-size:1.25rem;color:var(--mut);margin:0 0 12px}
+.big{font-size:4.5rem;font-weight:800;text-align:center;line-height:1.1;margin-bottom:10px}
+input{width:100%;font:800 1.9rem "Baloo 2",system-ui,sans-serif;text-align:center;padding:10px;border:3px solid var(--ink);border-radius:14px;background:var(--card);color:var(--ink)}
+input.ok{border-color:var(--ok);color:var(--ok)}
+input.bad{border-color:var(--bad);color:var(--bad)}
+.cols{display:grid;grid-template-columns:1fr 1.7fr;gap:14px}
+.cols>div{display:flex;flex-direction:column;gap:10px}
+.chip{font:800 1.3rem "Baloo 2",system-ui,sans-serif;padding:12px 8px;border-radius:14px;border:3px solid var(--line);background:var(--key);color:var(--ink);cursor:pointer}
+.chip.sel{border-color:var(--ink);background:var(--sun);color:#14213d}
+.chip.good{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+.chip.wrong{background:var(--badbg);border-color:var(--bad);color:var(--bad)}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:62px;padding:8px;border-radius:14px}
+#slots{border:3px dashed var(--line);margin-bottom:12px}
+.fb{min-height:32px;text-align:center;font-size:1.2rem;font-weight:700;margin:12px 0 0}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.go{display:block;width:100%;margin-top:12px;font:800 1.4rem "Baloo 2",system-ui,sans-serif;border:0;border-radius:16px;padding:12px 0;background:var(--sun);color:#14213d;cursor:pointer}
+.go.sec{background:var(--key);color:var(--ink)}
+button:focus-visible,input:focus-visible{outline:4px solid var(--mint);outline-offset:2px}
+.end{text-align:center}
+.stars{font-size:2.6rem;letter-spacing:6px}
+.end p{font-size:1.2rem;margin:8px 0 16px}
+[hidden]{display:none!important}
+.back{display:inline-block;margin:0 0 8px;color:var(--mut);font:700 1rem "Baloo 2",system-ui,sans-serif;text-decoration:none}
+.back:hover{color:var(--ink)}
+</style>
+</head>
+<body>
+<main>
+<a class="back" href="index.html">← Hasiera</a>
+<h1>Zenbakiak</h1>
+<div class="path" id="path"></div>
+<section class="card" id="play">
+  <div class="meta"><span id="lname"></span><span id="count"></span></div>
+  <div class="bar"><i id="bar"></i></div>
+  <div id="stage"></div>
+  <div class="fb" id="fb" aria-live="polite"></div>
+  <button class="go" id="go">Comprobar</button>
+</section>
+<section class="card end" id="end" hidden>
+  <div class="stars" id="stars"></div>
+  <h2 id="etitle"></h2>
+  <p id="etext"></p>
+  <button class="go" id="next"></button>
+  <button class="go sec" id="again">Repetir el nivel</button>
+</section>
+</main>
+<script>
+var U=["","bat","bi","hiru","lau","bost","sei","zazpi","zortzi","bederatzi","hamar","hamaika","hamabi","hamahiru","hamalau","hamabost","hamasei","hamazazpi","hamazortzi","hemeretzi"];
+var B=["hogei","berrogei","hirurogei","laurogei"];
+function w(n){if(n===100)return"ehun";var k=Math.floor(n/20),m=n%20;if(k===0)return U[m];if(m===0)return B[k-1];return B[k-1]+"ta "+U[m]}
+function norm(s){return s.toLowerCase().replace(/\s+/g,"")}
+function shuf(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function pick(lo,hi,c){var a=[];for(var i=lo;i<=hi;i++)a.push(i);return shuf(a).slice(0,c)}
+var LEVELS=[
+ {n:"Del 1 al 10",lo:1,hi:10},{n:"Del 11 al 20",lo:11,hi:20},{n:"Del 21 al 40",lo:21,hi:40},
+ {n:"Del 41 al 60",lo:41,hi:60},{n:"Del 61 al 80",lo:61,hi:80},{n:"Del 81 al 100",lo:81,hi:100},
+ {n:"Reto: del 1 al 100",lo:1,hi:100}
+];
+var SEQ=["match","write","order","write","match","order","write","write"],TOTAL=8,PASS=6;
+var save={open:1,stars:{}};
+try{var s=JSON.parse(localStorage.getItem("zenbakiak"));if(s&&s.open)save=s}catch(e){}
+function persist(){try{localStorage.setItem("zenbakiak",JSON.stringify(save))}catch(e){}}
+var $=function(i){return document.getElementById(i)};
+var lv=0,qi=0,hits=0,checked=false,chk=null;
+
+function drawPath(){
+  var p=$("path");p.innerHTML="";
+  LEVELS.forEach(function(L,i){
+    var b=document.createElement("button");
+    b.className="dot"+(i===lv?" on":"")+(save.stars[i]?" done":"");
+    b.textContent=i+1;b.title=L.n;b.setAttribute("aria-label","Nivel "+(i+1)+": "+L.n);
+    b.disabled=i+1>save.open;
+    b.onclick=function(){start(i)};
+    p.appendChild(b);
+  });
+}
+function start(i){
+  lv=i;qi=0;hits=0;$("play").hidden=false;$("end").hidden=true;
+  $("lname").textContent="Nivel "+(i+1)+": "+LEVELS[i].n;
+  drawPath();ask();
+}
+function setFb(t,c){var f=$("fb");f.textContent=t;f.className="fb"+(c?" "+c:"")}
+function ask(){
+  checked=false;chk=null;setFb("","");
+  var g=$("go");g.hidden=false;g.textContent="Comprobar";
+  $("count").textContent=(qi+1)+" de "+TOTAL;
+  $("bar").style.width=(qi/TOTAL*100)+"%";
+  var t=SEQ[qi];
+  ({match:matchEx,write:writeEx,order:orderEx})[t]();
+  if(t==="match")g.hidden=true;
+}
+function done(ok,msg){
+  if(checked)return;checked=true;if(ok)hits++;
+  setFb(msg,ok?"ok":"bad");
+  var g=$("go");g.hidden=false;g.textContent=qi+1>=TOTAL?"Ver resultado":"Siguiente";
+  $("bar").style.width=((qi+1)/TOTAL*100)+"%";
+}
+function go(){
+  if(checked){qi++;qi>=TOTAL?finish():ask()}
+  else if(chk)chk();
+}
+
+function matchEx(){
+  var L=LEVELS[lv],nums=pick(L.lo,L.hi,4),left=nums.slice().sort(function(a,b){return a-b}),right=shuf(nums.slice());
+  $("stage").innerHTML='<p class="task">Une cada número con su palabra</p><div class="cols"><div id="cl"></div><div id="cr"></div></div>';
+  var sl=null,sr=null,rest=4,bad=0,flash=false,bl={},br={};
+  function mk(n,side,txt){
+    var b=document.createElement("button");b.className="chip";b.textContent=txt;
+    b.onclick=function(){
+      if(b.disabled||flash||checked)return;
+      if(side==="l"){if(sl!==null)bl[sl].classList.remove("sel");sl=n}
+      else{if(sr!==null)br[sr].classList.remove("sel");sr=n}
+      b.classList.add("sel");
+      if(sl!==null&&sr!==null){
+        var x=bl[sl],y=br[sr];
+        if(sl===sr){
+          x.className=y.className="chip good";x.disabled=y.disabled=true;rest--;
+          if(!rest){
+            if(bad<=1)done(true,bad?"Casi perfecto: un fallo.":"¡Todo bien!");
+            else done(false,"Demasiados fallos. Repasa estas palabras.");
+          }
+        }else{
+          bad++;flash=true;x.classList.add("wrong");y.classList.add("wrong");
+          setTimeout(function(){x.className=y.className="chip";flash=false},550);
+        }
+        sl=sr=null;
+      }
+    };
+    (side==="l"?bl:br)[n]=b;$(side==="l"?"cl":"cr").appendChild(b);
+  }
+  left.forEach(function(n){mk(n,"l",n)});
+  right.forEach(function(n){mk(n,"r",w(n))});
+}
+
+function writeEx(){
+  var L=LEVELS[lv],n=pick(L.lo,L.hi,1)[0],ans=w(n);
+  $("stage").innerHTML='<p class="task">Escribe este número en euskera</p><div class="big">'+n+'</div><input id="inp" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Respuesta">';
+  var inp=$("inp");setTimeout(function(){inp.focus()},50);
+  chk=function(){
+    var v=norm(inp.value);if(!v)return setFb("Escribe tu respuesta.","");
+    var ok=v===norm(ans);inp.className=ok?"ok":"bad";inp.readOnly=true;
+    done(ok,ok?"¡Muy bien!":"Se escribe: "+ans);
+  };
+}
+
+function orderEx(){
+  var L=LEVELS[lv],nums=pick(L.lo,L.hi,4),sorted=nums.slice().sort(function(a,b){return a-b}),pool=shuf(nums.slice()),ans=[];
+  $("stage").innerHTML='<p class="task">Ordena las palabras de menor a mayor</p><div class="row" id="slots"></div><div class="row" id="pool"></div>';
+  function draw(){
+    var s=$("slots"),p=$("pool");s.innerHTML="";p.innerHTML="";
+    ans.forEach(function(n){var b=document.createElement("button");b.className="chip";b.textContent=w(n);b.onclick=function(){if(checked)return;ans.splice(ans.indexOf(n),1);pool.push(n);draw()};s.appendChild(b)});
+    pool.forEach(function(n){var b=document.createElement("button");b.className="chip";b.textContent=w(n);b.onclick=function(){if(checked)return;pool.splice(pool.indexOf(n),1);ans.push(n);draw()};p.appendChild(b)});
+  }
+  draw();
+  chk=function(){
+    if(ans.length<4)return setFb("Pon las 4 palabras en orden.","");
+    var ok=ans.every(function(n,i){return n===sorted[i]});
+    $("slots").querySelectorAll(".chip").forEach(function(c){c.classList.add(ok?"good":"wrong")});
+    done(ok,ok?"¡Muy bien!":"El orden correcto es: "+sorted.map(w).join(", ")+".");
+  };
+}
+
+function finish(){
+  var won=hits>=PASS,st=hits>=TOTAL?3:hits>=7?2:won?1:0,last=lv===LEVELS.length-1;
+  $("play").hidden=true;$("end").hidden=false;
+  $("stars").textContent="★".repeat(st)+"☆".repeat(3-st);
+  $("etitle").textContent=won?"¡Nivel superado!":"Casi lo tienes";
+  $("etext").textContent="Has acertado "+hits+" de "+TOTAL+(won?".":". Necesitas "+PASS+" para pasar. ¡Inténtalo otra vez!");
+  if(won){
+    save.stars[lv]=Math.max(save.stars[lv]||0,st);
+    if(!last&&save.open<lv+2)save.open=lv+2;
+    persist();
+    if(last)$("etext").textContent+=" ¡Has completado toda la ruta!";
+  }
+  var nx=$("next");nx.hidden=!(won&&!last);
+  nx.textContent="Ir al nivel "+(lv+2);nx.onclick=function(){start(lv+1)};
+  drawPath();
+}
+$("go").onclick=go;
+$("again").onclick=function(){start(lv)};
+document.addEventListener("keydown",function(e){
+  if($("play").hidden||e.key!=="Enter")return;
+  if(e.target.tagName==="INPUT"||e.target===document.body){e.preventDefault();go()}
+});
+start(Math.min(save.open,LEVELS.length)-1);
+</script>
+</body>
+</html>
