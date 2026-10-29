@@ -1,52 +1,172 @@
+
 <!doctype html>
 <html lang="eu">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Euskara jolasak</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+
 <style>
-:root{--bg:#e8f3ff;--card:#ffffff;--ink:#14213d;--mut:#5b6b8c;--sun:#ffc93c;--mint:#1fb5a5;--line:#c4d6f2;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f1a30;--card:#1a2744;--ink:#f2f6ff;--mut:#a3b3d6;--sun:#ffd25e;--mint:#3fd6c5;--line:#33466f}}
-:root[data-theme="dark"]{color-scheme:dark;--bg:#0f1a30;--card:#1a2744;--ink:#f2f6ff;--mut:#a3b3d6;--sun:#ffd25e;--mint:#3fd6c5;--line:#33466f}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font-family:"Baloo 2",system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:500;min-height:100%}
-main{max-width:480px;margin:0 auto;padding:28px 16px 40px}
-h1{font-size:2rem;font-weight:800;margin:0 0 4px;text-align:center}
-.sub{text-align:center;color:var(--mut);font-size:1.2rem;margin:0 0 24px}
-.game{display:block;text-decoration:none;color:var(--ink);background:var(--card);border:3px solid var(--line);border-radius:24px;padding:22px 18px;margin-bottom:16px;text-align:center;transition:transform .12s,border-color .12s}
-.game:hover,.game:focus-visible{border-color:var(--sun);transform:translateY(-3px);outline:none}
-.game:focus-visible{outline:4px solid var(--mint);outline-offset:3px}
-.ico{font-size:3rem;line-height:1;margin-bottom:6px}
-.game h2{margin:0;font-size:1.7rem;font-weight:800}
-.game p{margin:4px 0 14px;color:var(--mut);font-size:1.1rem}
-.btn{display:inline-block;background:var(--sun);color:#14213d;font-weight:800;font-size:1.2rem;padding:8px 26px;border-radius:14px}
+:root {
+  --bg: #e8f3ff;
+  --card: #ffffff;
+  --ink: #14213d;
+  --mut: #5b6b8c;
+  --sun: #ffc93c;
+  --mint: #1fb5a5;
+  --line: #c4d6f2;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0f1a30;
+    --card: #1a2744;
+    --ink: #f2f6ff;
+    --mut: #a3b3d6;
+    --sun: #ffd25e;
+    --mint: #3fd6c5;
+    --line: #33466f;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0f1a30;
+  --card: #1a2744;
+  --ink: #f2f6ff;
+  --mut: #a3b3d6;
+  --sun: #ffd25e;
+  --mint: #3fd6c5;
+  --line: #33466f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Baloo 2", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 500;
+  min-height: 100%;
+}
+
+main {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 28px 16px 40px;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 4px;
+  text-align: center;
+}
+
+.sub {
+  text-align: center;
+  color: var(--mut);
+  font-size: 1.2rem;
+  margin: 0 0 24px;
+}
+
+.game {
+  display: block;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--card);
+  border: 3px solid var(--line);
+  border-radius: 24px;
+  padding: 22px 18px;
+  margin-bottom: 16px;
+  text-align: center;
+  transition: transform .12s, border-color .12s;
+}
+
+.game:hover,
+.game:focus-visible {
+  border-color: var(--sun);
+  transform: translateY(-3px);
+  outline: none;
+}
+
+.game:focus-visible {
+  outline: 4px solid var(--mint);
+  outline-offset: 3px;
+}
+
+.ico {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.game h2 {
+  margin: 0;
+  font-size: 1.7rem;
+  font-weight: 800;
+}
+
+.game p {
+  margin: 4px 0 14px;
+  color: var(--mut);
+  font-size: 1.1rem;
+}
+
+.btn {
+  display: inline-block;
+  background: var(--sun);
+  color: #14213d;
+  font-weight: 800;
+  font-size: 1.2rem;
+  padding: 8px 26px;
+  border-radius: 14px;
+}
 </style>
 </head>
+
 <body>
 <main>
-<h1>Euskara jolasak</h1>
-<p class="sub">Aukeratu jolas bat</p>
-<a class="game" href="zenbakiak.html">
-  <div class="ico">🔢</div>
-  <h2>Zenbakiak</h2>
-  <p>Zenbakiak euskaraz, 1etik 100era</p>
-  <span class="btn">Jolastu</span>
-</a>
-<a class="game" href="nongo.html">
-  <div class="ico">📍</div>
-  <h2>Non, Nongo, Nongoa</h2>
-  <p>Deklinabideak esaldietan landu</p>
-  <span class="btn">Jolastu</span>
-</a>
-<a class="game" href="izan-ukan.html">
-  <div class="ico">🔢</div>
-  <h2>Zenbakiak</h2>
-  <p>Izan eta Ukan<a</p>
-  <span class="btn">Jolastu</span>
-</a>
+
+  <h1>Euskara jolasak</h1>
+  <p class="sub">Aukeratu jolas bat</p>
+
+  <!-- JOKOA 1: ZENBAKIAK -->
+  <a class="game" href="zenbakiak.html">
+    <div class="ico">🔢</div>
+    <h2>Zenbakiak</h2>
+    <p>Zenbakiak euskaraz, 1etik 100era</p>
+    <span class="btn">Jolastu</span>
+  </a>
+
+  <!-- JOKOA 2: NON, NONGO, NONGOA -->
+  <a class="game" href="nongo.html">
+    <div class="ico">📍</div>
+    <h2>Non, Nongo, Nongoa</h2>
+    <p>Deklinabideak esaldietan landu</p>
+    <span class="btn">Jolastu</span>
+  </a>
+
+  <!-- JOKOA 3: IZAN ETA UKAN -->
+  <a class="game" href="izan-ukan.html">
+    <div class="ico">🗣️</div>
+    <h2>Izan eta Ukan</h2>
+    <p>Landu aditzak eta praktikatu euskaraz</p>
+    <span class="btn">Jolastu</span>
+  </a>
+
 </main>
 </body>
 </html>
