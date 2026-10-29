@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="eu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hiztegia</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e8f3ff;--card:#ffffff;--ink:#14213d;--mut:#5b6b8c;--sun:#ffc93c;--mint:#1fb5a5;--ok:#12805c;--okbg:#d8f5e8;--bad:#c92a4b;--badbg:#ffe1e7;--key:#dbe9ff;--line:#c4d6f2;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f1a30;--card:#1a2744;--ink:#f2f6ff;--mut:#a3b3d6;--sun:#ffd25e;--mint:#3fd6c5;--ok:#6ee7b0;--okbg:#14382f;--bad:#ff8aa1;--badbg:#42202a;--key:#26375d;--line:#33466f}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0f1a30;--card:#1a2744;--ink:#f2f6ff;--mut:#a3b3d6;--sun:#ffd25e;--mint:#3fd6c5;--ok:#6ee7b0;--okbg:#14382f;--bad:#ff8aa1;--badbg:#42202a;--key:#26375d;--line:#33466f}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Baloo 2",system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:500;min-height:100%}
+main{max-width:480px;margin:0 auto;padding:16px 16px 32px}
+h1{font-size:1.6rem;font-weight:800;margin:4px 0 8px;text-align:center}
+.legend{text-align:center;color:var(--mut);margin:0 0 12px;font-size:1rem}
+.path{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.dot{width:46px;height:46px;border-radius:50%;border:3px solid var(--line);background:var(--card);color:var(--ink);font:800 1.1rem "Baloo 2",system-ui,sans-serif;cursor:pointer}
+.dot[disabled]{opacity:.45;cursor:not-allowed}
+.dot.on{background:var(--sun);border-color:var(--ink);color:#14213d}
+.dot.done{border-color:var(--mint)}
+.card{background:var(--card);border-radius:22px;padding:20px 16px;border:2px solid var(--line)}
+.meta{display:flex;justify-content:space-between;color:var(--mut)}
+.bar{height:10px;background:var(--key);border-radius:9px;margin:8px 0 16px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--mint);width:0;transition:width .3s}
+.task{text-align:center;font-size:1.25rem;color:var(--mut);margin:0 0 12px}
+.big{font-size:3.4rem;font-weight:800;text-align:center;line-height:1.15;margin-bottom:6px}
+.tag{display:inline-block;background:var(--sun);color:#14213d;border-radius:12px;padding:2px 14px;font-weight:800;font-size:1.4rem}
+.hint{text-align:center;color:var(--mut);margin:6px 0 12px}
+.word{text-align:center;font-size:1.8rem;font-weight:800;margin-bottom:4px}
+.sent{font-size:1.8rem;font-weight:800;text-align:center;line-height:1.3;margin:8px 0 16px}
+.cue{text-align:center;font-size:2.2rem;letter-spacing:4px;margin:0 0 4px}
+.lab{text-align:center;color:var(--mut);margin:6px 0 4px}
+.grp{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:8px}
+.inp2{font-size:1.6rem;margin-bottom:6px}
+.ex{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--key);text-align:left;font-size:1.05rem;line-height:1.35}
+.ex .b{font-weight:800}
+.ex .es{color:var(--mut);font-style:italic;margin-top:2px}
+.sent b{background:var(--sun);color:#14213d;border-radius:8px;padding:0 8px}
+input{width:100%;font:800 1.9rem "Baloo 2",system-ui,sans-serif;text-align:center;padding:10px;border:3px solid var(--ink);border-radius:14px;background:var(--card);color:var(--ink)}
+input.ok{border-color:var(--ok);color:var(--ok)}
+input.bad{border-color:var(--bad);color:var(--bad)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cols>div,.opts{display:flex;flex-direction:column;gap:10px}
+.chip{font:800 1.3rem "Baloo 2",system-ui,sans-serif;padding:12px 8px;border-radius:14px;border:3px solid var(--line);background:var(--key);color:var(--ink);cursor:pointer}
+.chip.sel{border-color:var(--ink);background:var(--sun);color:#14213d}
+.chip.good{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+.chip.wrong{background:var(--badbg);border-color:var(--bad);color:var(--bad)}
+.fb{min-height:32px;text-align:center;font-size:1.2rem;font-weight:700;margin:12px 0 0}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.go{display:block;width:100%;margin-top:12px;font:800 1.4rem "Baloo 2",system-ui,sans-serif;border:0;border-radius:16px;padding:12px 0;background:var(--sun);color:#14213d;cursor:pointer}
+.go.sec{background:var(--key);color:var(--ink)}
+button:focus-visible,input:focus-visible{outline:4px solid var(--mint);outline-offset:2px}
+.end{text-align:center}
+.stars{font-size:2.6rem;letter-spacing:6px}
+.end p{font-size:1.2rem;margin:8px 0 16px}
+[hidden]{display:none!important}
+.back{display:inline-block;margin:0 0 8px;color:var(--mut);font:700 1rem "Baloo 2",system-ui,sans-serif;text-decoration:none}
+.back:hover{color:var(--ink)}
+
+.sub{text-align:center;color:var(--mut);font-size:1.2rem;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tcard{background:var(--card);border:3px solid var(--line);border-radius:20px;padding:14px 8px;text-align:center;cursor:pointer;color:var(--ink);font:800 1.05rem "Baloo 2",system-ui,sans-serif;line-height:1.15}
+.tcard:hover,.tcard:focus-visible{border-color:var(--sun)}
+.tcard .ti{display:block;font-size:2rem;margin-bottom:2px}
+.tcard .ts{display:block;color:var(--mint);letter-spacing:3px;font-size:1rem;min-height:1.4em}
+.mini{background:var(--key);color:var(--ink);border:0;border-radius:12px;padding:4px 12px;font:700 1rem "Baloo 2",system-ui,sans-serif;cursor:pointer}
+.big2{font-size:2.3rem;font-weight:800;text-align:center;line-height:1.2;margin:4px 0 14px}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:62px;padding:8px;border-radius:14px}
+#slots{border:3px dashed var(--line);margin-bottom:12px}
+.letter{min-width:46px;font-size:1.5rem;padding:8px 10px}
+</style>
+</head>
+<body>
+<main>
+<a class="back" href="index.html">← Hasiera</a>
+<h1>Hiztegia</h1>
+<section id="home">
+  <p class="sub">Aukeratu gai bat</p>
+  <div class="grid" id="grid"></div>
+</section>
+<section class="card" id="play" hidden>
+  <div class="meta"><button class="mini" id="tb">← Gaiak</button><span id="count"></span></div>
+  <div class="bar"><i id="bar"></i></div>
+  <div id="stage"></div>
+  <div class="fb" id="fb" aria-live="polite"></div>
+  <div class="ex" id="ex" hidden></div>
+  <button class="go" id="go">Egiaztatu</button>
+</section>
+<section class="card end" id="end" hidden>
+  <div class="stars" id="stars"></div>
+  <h2 id="etitle"></h2>
+  <p id="etext"></p>
+  <button class="go" id="again">Errepikatu</button>
+  <button class="go sec" id="back">Beste gai bat</button>
+</section>
+</main>
+<script>
+var TOPICS=[{"id": "t0", "n": "Agurrak eta elkarrizketak", "i": "👋", "e": [["Kaixo!", "¡Hola!"], ["Aupa!", "¡Hola!"], ["Egun on!", "¡Buenos días!"], ["Arratsalde on!", "¡Buenas tardes!"], ["Gabon!", "¡Buenas noches!"], ["Agur!", "¡Adiós!"], ["Ikusi arte!", "¡Hasta la vista!"], ["Hurren arte!", "¡Hasta la próxima!"], ["Aizu!", "¡Oye!"], ["Barkatu!", "Perdona / Disculpa"], ["Eskerrik asko!", "¡Muchas gracias!"], ["Mila esker!", "¡Mil gracias!"], ["Ez horregatik.", "De nada"], ["Bai.", "Sí"], ["Ez.", "No"], ["Mesedez.", "Por favor"], ["Pozten naiz.", "Encantado/a"], ["Aspaldiko!", "¡Cuánto tiempo!"], ["Zer moduz?", "¿Qué tal?"], ["Ondo.", "Bien"], ["Oso ondo.", "Muy bien"], ["Neu ere bai.", "Yo también"], ["Eta zu?", "¿Y tú?"], ["Eta zuek?", "¿Y vosotros/as?"], ["Nor zara?", "¿Quién eres?"], ["Zein da zure izena?", "¿Cómo te llamas?"], ["Nongoa zara?", "¿De dónde eres?"], ["Non bizi zara?", "¿Dónde vives?"], ["Noiz etorri zara?", "¿Cuándo has venido?"], ["Zer nahi duzu?", "¿Qué quieres?"]]}, {"id": "t1", "n": "Galderak eta oinarrizko hitzak", "i": "❓", "e": [["Nor?", "¿Quién?"], ["Zer?", "¿Qué?"], ["Non?", "¿Dónde?"], ["Nongoa?", "¿De dónde?"], ["Noiz?", "¿Cuándo?"], ["Nola? / Zelan?", "¿Cómo?"], ["Nolakoa? / Zelakoa?", "¿Cómo es?"], ["Zenbat?", "¿Cuánto/a/os/as?"], ["Zein?", "¿Cuál? / ¿Qué?"], ["Eta", "Y"], ["Edo", "O"], ["Hemen", "Aquí"], ["Han", "Allí"], ["Orain", "Ahora"], ["Gaur", "Hoy"], ["Bihar", "Mañana"], ["Atzo", "Ayer"], ["Oraintxe bertan", "Justo ahora"], ["Aspaldi", "Hace mucho tiempo"], ["Lehenengo", "Primero"], ["Berriro", "Otra vez"], ["Oso", "Muy"], ["Nahiko", "Bastante"], ["Ez", "No"], ["Bai", "Sí"], ["Ondo", "Bien"], ["Gaizki / Txarto", "Mal"]]}, {"id": "t2", "n": "Nolakoa da?", "i": "🧍", "e": [["Handia", "Grande"], ["Txikia", "Pequeño/a"], ["Altua", "Alto/a"], ["Baxua", "Bajo/a"], ["Garai", "Alto/a"], ["Argala", "Delgado/a"], ["Lodia", "Gordo/a"], ["Potoloa", "Gordito/a"], ["Zabal", "Ancho/a"], ["Estu", "Estrecho/a"], ["Gaztea", "Joven"], ["Zaharra", "Viejo/a"], ["Berria", "Nuevo/a"], ["Ona", "Bueno/a"], ["Gaiztoa", "Malo/a"], ["Polita", "Bonito/a"], ["Itsusia", "Feo/a"], ["Alaia", "Alegre"], ["Tristea", "Triste"], ["Lohia", "Sucio/a"], ["Zikina", "Sucio/a"], ["Garbia", "Limpio/a"], ["Indartsua", "Fuerte"], ["Trebea", "Hábil"], ["Urduria", "Nervioso/a"], ["Alferra", "Vago/a"], ["Aberatsa", "Rico/a"], ["Txiroa", "Pobre"], ["Jatorra", "Simpático/a"], ["Lotsatia", "Tímido/a"], ["Bizkorra", "Ágil / Espabilado/a"], ["Zehatza", "Preciso/a"], ["Liraina", "Esbelto/a"], ["Beltzarana", "Moreno/a de piel"], ["Burusoila", "Calvo/a"], ["Ilezuria", "Canoso/a"], ["Ilegorria", "Pelirrojo/a"], ["Eskuzabala", "Generoso/a"], ["Buruargia", "Inteligente"], ["Txukuna", "Ordenado/a"], ["Okerra", "Torcido/a / Incorrecto/a"], ["Iletsua", "Peludo/a"]]}, {"id": "t3", "n": "Nola dago?", "i": "😴", "e": [["Nekatuta", "Cansado/a"], ["Triste", "Triste"], ["Ondo", "Bien"], ["Gaizki", "Mal"], ["Itxita", "Cerrado/a"], ["Beteta", "Lleno/a"], ["Berandu", "Tarde"], ["Pozik", "Contento/a"], ["Presaz", "Con prisa"]]}, {"id": "t4", "n": "Lanbideak", "i": "💼", "e": [["Kazetaria", "Periodista"], ["Txirrindularia", "Ciclista"], ["Arrantzalea", "Pescador/a"], ["Albaitaria", "Veterinario/a"], ["Artzaina", "Pastor/a"], ["Sendagilea", "Médico/a"], ["Erizaina", "Enfermero/a"], ["Etxekoandrea", "Ama de casa"], ["Musikaria", "Músico/a"], ["Jostuna", "Sastre / Modista"], ["Mekanikaria", "Mecánico/a"], ["Udaltzaina", "Policía municipal"], ["Lorezaina", "Jardinero/a"], ["Arkitektoa", "Arquitecto/a"], ["Sukaldaria", "Cocinero/a"], ["Irakaslea", "Profesor/a"], ["Okina", "Panadero/a"], ["Argazkilaria", "Fotógrafo/a"], ["Nekazaria", "Agricultor/a"], ["Postaria", "Cartero/a"], ["Pintorea", "Pintor/a"]]}, {"id": "t5", "n": "Familia", "i": "👨‍👩‍👧", "e": [["Familia", "Familia"], ["Aita", "Padre"], ["Ama", "Madre"], ["Gurasoak", "Padres"], ["Semea", "Hijo"], ["Alaba", "Hija"], ["Seme-alabak", "Hijos/as"], ["Ahizpa", "Hermana (de una chica)"], ["Arreba", "Hermana (de un chico)"], ["Aitona", "Abuelo"], ["Amona", "Abuela"], ["Aiton-amonak", "Abuelos"], ["Osaba", "Tío"], ["Izeba", "Tía"], ["Lehengusua", "Primo"], ["Lehengusina", "Prima"], ["Bikotea", "Pareja"], ["Neska-laguna", "Novia"], ["Mutil-laguna", "Novio"], ["Senarra", "Marido"], ["Emaztea", "Esposa"], ["Gizona", "Hombre"], ["Emakumea", "Mujer"], ["Umea", "Niño/a"], ["Mutila", "Chico"], ["Neska", "Chica"]]}, {"id": "t6", "n": "Lekuak", "i": "🏙️", "e": [["Hiria", "Ciudad"], ["Herria", "Pueblo"], ["Kalea", "Calle"], ["Etxea", "Casa"], ["Eskola", "Escuela"], ["Euskaltegia", "Centro de aprendizaje de euskera"], ["Taberna", "Bar"], ["Hotela", "Hotel"], ["Tren geltokia", "Estación de tren"], ["Hondartza", "Playa"], ["Ibai", "Río"], ["Antzokia", "Teatro"], ["Mendia", "Montaña"], ["Denda", "Tienda"], ["Ostatua", "Posada / Hostal"], ["Arropa denda", "Tienda de ropa"], ["Parkea", "Parque"], ["Alde Zaharra", "Casco antiguo"], ["Itsasontzia", "Barco"], ["Pasaportea", "Pasaporte"]]}, {"id": "t7", "n": "Datu pertsonalak", "i": "🪪", "e": [["Izena", "Nombre"], ["Abizena", "Apellido"], ["Abizenak", "Apellidos"], ["Helbidea", "Dirección"], ["Telefonoa", "Teléfono"], ["Telefono zenbakia", "Número de teléfono"], ["Herria", "Pueblo / Localidad"], ["Pasaporte zenbakia", "Número de pasaporte"], ["Adina", "Edad"], ["Egoera zibila", "Estado civil"], ["Lan egoera", "Situación laboral"], ["Lanbidea", "Profesión"], ["Inkesta", "Encuesta"], ["Galdetegia", "Cuestionario"], ["Galdera", "Pregunta"], ["Erantzuna", "Respuesta"], ["Ezkondua", "Casado/a"], ["Ezkongabea", "Soltero/a"], ["Lana", "Trabajo"], ["Ikaskidea", "Compañero/a de clase"], ["Ikaslea", "Estudiante"], ["Idazkaria", "Secretario/a"]]}, {"id": "t8", "n": "Aditzak", "i": "🏃", "e": [["Izan", "Ser / Estar"], ["Egon", "Estar"], ["Eduki", "Tener"], ["Ukan", "Tener / Haber"], ["Bizi izan", "Vivir"], ["Etorri", "Venir"], ["Joan", "Ir"], ["Egin", "Hacer"], ["Erosi", "Comprar"], ["Jan", "Comer"], ["Edan", "Beber"], ["Ikusi", "Ver"], ["Entzun", "Escuchar"], ["Irakurri", "Leer"], ["Esan", "Decir"], ["Sartu", "Entrar"], ["Irten", "Salir"], ["Hartu", "Coger / Tomar"], ["Eman", "Dar"], ["Eraman", "Llevar"], ["Jantzi", "Vestirse / Ponerse ropa"], ["Jolastu", "Jugar"], ["Lan egin", "Trabajar"], ["Gosaldu", "Desayunar"], ["Afaldu", "Cenar"], ["Lo egin", "Dormir"], ["Esnatu", "Despertarse"], ["Garbitu", "Limpiar / Lavarse"], ["Itxi", "Cerrar"], ["Ireki", "Abrir"], ["Saldu", "Vender"], ["Ordaindu", "Pagar"], ["Agurtu", "Saludar / Despedirse"], ["Dantzatu", "Bailar"], ["Jaitsi", "Bajar"], ["Igo", "Subir"], ["Jarri", "Poner / Ponerse"], ["Ezkondu", "Casarse"], ["Galdetu", "Preguntar"], ["Bete", "Llenar / Completar"], ["Osatu", "Completar"], ["Azaldu", "Explicar"], ["Entregatu", "Entregar"]]}, {"id": "t9", "n": "Beste hitz erabilgarriak", "i": "🧩", "e": [["Etxe", "Casa"], ["Leiho", "Ventana"], ["Ate", "Puerta"], ["Auto", "Coche"], ["Tren", "Tren"], ["Bagoia", "Vagón"], ["Txakurra", "Perro"], ["Katua", "Gato"], ["Begiak", "Ojos"], ["Ilea", "Pelo"], ["Prakak", "Pantalones"], ["Arropa", "Ropa"], ["Mahaia", "Mesa"], ["Egunkaria", "Periódico"], ["Irratia", "Radio"], ["Bideoa", "Vídeo"], ["Diskoa", "Disco"], ["Paketea", "Paquete"], ["Sagarra", "Manzana"], ["Bizkotxoa", "Bizcocho"], ["Afaria", "Cena"], ["Ariketa", "Ejercicio"], ["Gezurra", "Mentira"], ["Egia", "Verdad"], ["Urtea", "Año"], ["Adiskidea", "Amigo/a"], ["Laguna", "Amigo/a"], ["Ikastaroa", "Curso"], ["Sukaldaritza", "Cocina"], ["Izen-abizenak", "Nombre y apellidos"], ["Zenbakia", "Número"], ["Eskuina", "Derecha"], ["Ezkerra", "Izquierda"], ["Pisua", "Piso / Planta"], ["Goiza", "Mañana"], ["Arratsaldea", "Tarde"], ["Gaua", "Noche"], ["Ederto", "Perfecto / Estupendo"], ["Arin", "Rápido"], ["Lehenengo", "Primero"], ["Hurrengo", "Siguiente"], ["Bezala", "Como"], ["Bakarra", "Único/a / Solo/a"]]}];
+var SPEC=[{id:"mix",n:"Guztiak nahastuta",i:"🎲"},{id:"dago",n:"Da ala dago?",i:"🔀"}];
+var ALL=[];TOPICS.forEach(function(t){t.e.forEach(function(x){ALL.push(x)})});
+var DA=["Handia","Txikia","Altua","Baxua","Argala","Lodia","Gaztea","Zaharra","Polita","Itsusia","Indartsua","Alferra","Aberatsa","Txiroa","Jatorra","Buruargia","Eskuzabala"];
+var DAGO=["Nekatuta","Pozik","Presaz","Itxita","Beteta","Triste","Ondo","Gaizki / Txarto"];
+var SEQ=["match","eu2es","scr","tf","es2eu","write","match","scr"];
+var DSEQ=["ddf","ddq","ddf","ddf","ddq","ddf","ddq","ddf"];
+var SHOWGO={write:1,scr:1};
+var TOTAL=8,PASS=6;
+var $=function(i){return document.getElementById(i)};
+function shuf(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function ri(k){return Math.floor(Math.random()*k)}
+function nz(s){return s.toLowerCase().replace(/[\s!?¡¿.,\-]/g,"")}
+function valid(eu,es){return ALL.some(function(x){return x[0]===eu&&x[1]===es})}
+function accepted(es){var o=[];ALL.forEach(function(x){if(x[1]===es)x[0].split(" / ").forEach(function(a){o.push(nz(a))})});return o}
+function pairHtml(e){return '<div class="b">'+e[0]+'</div><div class="es">'+e[1]+'</div>'}
+var save={stars:{}};
+try{var sv=JSON.parse(localStorage.getItem("hiztegia1"));if(sv&&sv.stars)save=sv}catch(e){}
+function persist(){try{localStorage.setItem("hiztegia1",JSON.stringify(save))}catch(e){}}
+
+var cur=null,POOL=[],qE=[],ie=0,qi=0,hits=0,checked=false,chk=null;
+
+function home(){
+  $("home").hidden=false;$("play").hidden=true;$("end").hidden=true;
+  var g=$("grid");g.innerHTML="";
+  TOPICS.concat(SPEC).forEach(function(t){
+    var b=document.createElement("button");b.className="tcard";
+    var st=save.stars[t.id]||0;
+    b.innerHTML='<span class="ti">'+t.i+'</span>'+t.n+'<span class="ts">'+(st?"★".repeat(st)+"☆".repeat(3-st):"")+'</span>';
+    b.onclick=function(){startTopic(t)};
+    g.appendChild(b);
+  });
+}
+function startTopic(t){
+  cur=t;qi=0;hits=0;
+  POOL=t.id==="mix"?ALL.slice():t.id==="dago"?[]:t.e.slice();
+  qE=shuf(POOL.slice());ie=0;
+  $("home").hidden=true;$("play").hidden=false;$("end").hidden=true;
+  ask();
+}
+function ne(f){
+  if(!qE.length)return null;
+  for(var k=0;k<qE.length*2;k++){var e=qE[ie++%qE.length];if(!f||f(e))return e}
+  return qE[ie++%qE.length];
+}
+function setFb(t,c){var f=$("fb");f.textContent=t;f.className="fb"+(c?" "+c:"")}
+function ask(){
+  checked=false;chk=null;setFb("","");$("ex").hidden=true;$("ex").innerHTML="";
+  $("count").textContent=(qi+1)+" / "+TOTAL;
+  $("bar").style.width=(qi/TOTAL*100)+"%";
+  var t=(cur.id==="dago"?DSEQ:SEQ)[qi];
+  ({match:matchEx,eu2es:eu2es,es2eu:es2eu,scr:scr,tf:tf,write:wr,ddf:ddf,ddq:ddq})[t]();
+  var g=$("go");g.textContent="Egiaztatu";g.hidden=!SHOWGO[t];
+}
+function done(ok,msg,html){
+  if(checked)return;checked=true;if(ok)hits++;
+  setFb(msg,ok?"ok":"bad");
+  if(html){var e=$("ex");e.innerHTML=html;e.hidden=false}
+  var g=$("go");g.hidden=false;g.textContent=qi+1>=TOTAL?"Emaitza ikusi":"Hurrengoa";
+  $("bar").style.width=((qi+1)/TOTAL*100)+"%";
+}
+function go(){
+  if(checked){qi++;qi>=TOTAL?finish():ask()}
+  else if(chk)chk();
+}
+function mkOpts(list,ans,wmsg,hOk,hBad){
+  var o=$("opts");
+  list.forEach(function(t){
+    var b=document.createElement("button");b.className="chip";b.textContent=t;
+    b.onclick=function(){
+      if(checked)return;
+      var ok=t===ans;b.className="chip "+(ok?"good":"wrong");
+      if(!ok)Array.prototype.forEach.call(o.children,function(k,i){if(list[i]===ans)k.className="chip good"});
+      done(ok,ok?"Oso ondo!":wmsg,ok?hOk:hBad);
+    };
+    o.appendChild(b);
+  });
+}
+function dist(e,n,key){
+  var out=[],seen={};seen[e[key]]=1;
+  var cand=shuf(POOL.slice()).concat(shuf(ALL.slice()));
+  for(var i=0;i<cand.length&&out.length<n;i++){
+    var c=cand[i];
+    if(c[0]===e[0]||c[1]===e[1]||seen[c[key]])continue;
+    if(key===1&&valid(e[0],c[1]))continue;
+    if(key===0&&valid(c[0],e[1]))continue;
+    seen[c[key]]=1;out.push(c[key]);
+  }
+  return out;
+}
+function eu2es(){
+  var e=ne();
+  $("stage").innerHTML='<p class="task">Zer esan nahi du?</p><div class="big2">'+e[0]+'</div><div class="opts" id="opts"></div>';
+  mkOpts(shuf([e[1]].concat(dist(e,3,1))),e[1],"Zuzena: "+e[1],pairHtml(e),pairHtml(e));
+}
+function es2eu(){
+  var e=ne();
+  $("stage").innerHTML='<p class="task">Nola esaten da euskaraz?</p><div class="big2">'+e[1]+'</div><div class="opts" id="opts"></div>';
+  mkOpts(shuf([e[0]].concat(dist(e,3,0))),e[0],"Zuzena: "+e[0],pairHtml(e),pairHtml(e));
+}
+function tf(){
+  var e=ne(),t=Math.random()<.5,es=e[1];
+  if(!t){
+    var c=shuf(ALL.slice()).filter(function(x){return x[1]!==e[1]&&!valid(e[0],x[1])})[0];es=c[1];
+  }
+  $("stage").innerHTML='<p class="task">Egia ala gezurra?</p><div class="big2">'+e[0]+'<br>=<br>'+es+'</div><div class="opts" id="opts"></div>';
+  mkOpts(["Egia","Gezurra"],t?"Egia":"Gezurra","Gezurra da. Zuzena: "+e[0]+" = "+e[1],pairHtml(e),pairHtml(e));
+}
+function wr(){
+  var e=ne(),acc=accepted(e[1]);
+  $("stage").innerHTML='<p class="task">Idatzi euskaraz</p><div class="big2">'+e[1]+'</div><input id="inp" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Erantzuna">';
+  var inp=$("inp");setTimeout(function(){inp.focus()},50);
+  chk=function(){
+    var v=nz(inp.value);if(!v)return setFb("Idatzi zure erantzuna.","");
+    var ok=acc.indexOf(v)>-1;inp.className=ok?"ok":"bad";inp.readOnly=true;
+    done(ok,ok?"Oso ondo!":"Zuzena: "+e[0],pairHtml(e));
+  };
+}
+var SC=/^[A-Za-zñÑ]{4,11}$/;
+function scr(){
+  var e=ne(function(x){return SC.test(x[0])});
+  if(!e||!SC.test(e[0]))return wr();
+  var w=e[0].toLowerCase(),pool=[],ans=[];
+  var L=w.split("").map(function(c,i){return{c:c,i:i}});
+  pool=shuf(L.slice());
+  for(var k=0;k<5&&pool.map(function(x){return x.c}).join("")===w;k++)pool=shuf(L.slice());
+  $("stage").innerHTML='<p class="task">Ordenatu letrak</p><div class="big2">'+e[1]+'</div><div class="row" id="slots"></div><div class="row" id="pool"></div>';
+  function draw(){
+    var s=$("slots"),p=$("pool");s.innerHTML="";p.innerHTML="";
+    ans.forEach(function(x){var b=document.createElement("button");b.className="chip letter";b.textContent=x.c;b.onclick=function(){if(checked)return;ans.splice(ans.indexOf(x),1);pool.push(x);draw()};s.appendChild(b)});
+    pool.forEach(function(x){var b=document.createElement("button");b.className="chip letter";b.textContent=x.c;b.onclick=function(){if(checked)return;pool.splice(pool.indexOf(x),1);ans.push(x);draw()};p.appendChild(b)});
+  }
+  draw();
+  chk=function(){
+    if(ans.length<w.length)return setFb("Erabili letra guztiak.","");
+    var ok=ans.map(function(x){return x.c}).join("")===w;
+    Array.prototype.forEach.call($("slots").children,function(c){c.classList.add(ok?"good":"wrong")});
+    done(ok,ok?"Oso ondo!":"Zuzena: "+e[0],pairHtml(e));
+  };
+}
+
+function matchEx(){
+  var items=[],ue={},us={},tries=0;
+  while(items.length<4&&tries<80){
+    tries++;var e=ne();if(!e)break;
+    if(ue[e[0]]||us[e[1]])continue;
+    ue[e[0]]=1;us[e[1]]=1;items.push({l:e[0],f:e[1]});
+  }
+  var extra=shuf(ALL.slice());
+  for(var j=0;items.length<4&&j<extra.length;j++){var x=extra[j];if(ue[x[0]]||us[x[1]])continue;ue[x[0]]=1;us[x[1]]=1;items.push({l:x[0],f:x[1]})}
+  var right=shuf([0,1,2,3]);
+  var pairs=items.map(function(it){return it.l+" = "+it.f}).join("<br>");
+  $("stage").innerHTML='<p class="task">Lotu hitz bakoitza bere itzulpenarekin</p><div class="cols"><div id="cl"></div><div id="cr"></div></div>';
+  var sl=null,sr=null,rest=4,bad=0,flash=false,bl={},br={};
+  function mk(i,side,txt){
+    var b=document.createElement("button");b.className="chip";b.textContent=txt;
+    b.onclick=function(){
+      if(b.disabled||flash||checked)return;
+      if(side==="l"){if(sl!==null)bl[sl].classList.remove("sel");sl=i}
+      else{if(sr!==null)br[sr].classList.remove("sel");sr=i}
+      b.classList.add("sel");
+      if(sl!==null&&sr!==null){
+        var x=bl[sl],y=br[sr];
+        if(sl===sr){
+          x.className=y.className="chip good";x.disabled=y.disabled=true;rest--;
+          if(!rest){
+            if(bad<=1)done(true,bad?"Ia-ia! Akats bat.":"Oso ondo!",'<div class="es">'+pairs+'</div>');
+            else done(false,"Akats gehiegi. Errepasatu hitz hauek.",'<div class="es">'+pairs+'</div>');
+          }
+        }else{
+          bad++;flash=true;x.classList.add("wrong");y.classList.add("wrong");
+          setTimeout(function(){x.className=y.className="chip";flash=false},550);
+        }
+        sl=sr=null;
+      }
+    };
+    (side==="l"?bl:br)[i]=b;$(side==="l"?"cl":"cr").appendChild(b);
+  }
+  items.forEach(function(it,i){mk(i,"l",it.l)});
+  right.forEach(function(i){mk(i,"r",items[i].f)});
+}
+
+function dpick(){
+  var isDa=Math.random()<.5,list=isDa?DA:DAGO,l=list[ri(list.length)];
+  var x=ALL.filter(function(a){return a[0]===l})[0],w=l.split(" / ")[0],b=x[1].charAt(0).toLowerCase()+x[1].slice(1);
+  return{da:isDa,w:w,es:(isDa?"Es ":"Está ")+b+"."};
+}
+var REM="<b>da</b> (es): dice cómo es alguien o algo. Nolakoa da? → ¿Cómo es? Altua da. → Es alto/a.<br><b>dago</b> (está): dice cómo está alguien o algo. Nola dago? → ¿Cómo está? Nekatuta dago. → Está cansado/a.";
+function ddf(){
+  var d=dpick();
+  $("stage").innerHTML='<p class="task">Aukeratu forma zuzena</p><div class="big2">'+d.w+' ___.</div><div class="opts" id="opts"></div>';
+  var ans=d.da?"da":"dago";
+  mkOpts(shuf(["da","dago"]),ans,"Zuzena: "+d.w+" "+ans+".",'<div class="b">'+d.w+" "+ans+'.</div><div class="es">'+d.es+'</div>',"<b>Zergatia:</b><br>"+REM);
+}
+function ddq(){
+  var d=dpick(),ans=d.da?"Nolakoa da?":"Nola dago?";
+  $("stage").innerHTML='<p class="task">Zein galdera da?</p><div class="big2">'+d.w+" "+(d.da?"da":"dago")+'.</div><div class="opts" id="opts"></div>';
+  mkOpts(shuf(["Nolakoa da?","Nola dago?"]),ans,"Zuzena: "+ans,'<div class="b">'+ans+'</div><div class="es">'+(d.da?"¿Cómo es?":"¿Cómo está?")+'</div>',"<b>Zergatia:</b><br>"+REM);
+}
+
+function finish(){
+  var won=hits>=PASS,st=hits>=TOTAL?3:hits>=7?2:won?1:0;
+  $("play").hidden=true;$("end").hidden=false;
+  $("stars").textContent="★".repeat(st)+"☆".repeat(3-st);
+  $("etitle").textContent=won?"Gai hau gaindituta!":"Ia-ia lortu duzu";
+  $("etext").textContent=TOTAL+"tik "+hits+" asmatu dituzu."+(won?"":" Gainditzeko "+PASS+" behar dituzu. Saiatu berriro!");
+  if(won){save.stars[cur.id]=Math.max(save.stars[cur.id]||0,st);persist()}
+}
+$("go").onclick=go;
+$("tb").onclick=home;
+$("again").onclick=function(){startTopic(cur)};
+$("back").onclick=home;
+document.addEventListener("keydown",function(e){
+  if($("play").hidden||e.key!=="Enter")return;
+  if(e.target.tagName==="INPUT"||e.target===document.body){e.preventDefault();go()}
+});
+home();
+</script>
+</body>
+</html>
