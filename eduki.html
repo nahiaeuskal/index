@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="eu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eduki aditza</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e8f3ff;--card:#ffffff;--ink:#14213d;--mut:#5b6b8c;--sun:#ffc93c;--mint:#1fb5a5;--ok:#12805c;--okbg:#d8f5e8;--bad:#c92a4b;--badbg:#ffe1e7;--key:#dbe9ff;--line:#c4d6f2;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0f1a30;--card:#1a2744;--ink:#f2f6ff;--mut:#a3b3d6;--sun:#ffd25e;--mint:#3fd6c5;--ok:#6ee7b0;--okbg:#14382f;--bad:#ff8aa1;--badbg:#42202a;--key:#26375d;--line:#33466f}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0f1a30;--card:#1a2744;--ink:#f2f6ff;--mut:#a3b3d6;--sun:#ffd25e;--mint:#3fd6c5;--ok:#6ee7b0;--okbg:#14382f;--bad:#ff8aa1;--badbg:#42202a;--key:#26375d;--line:#33466f}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Baloo 2",system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:500;min-height:100%}
+main{max-width:480px;margin:0 auto;padding:16px 16px 32px}
+h1{font-size:1.6rem;font-weight:800;margin:4px 0 8px;text-align:center}
+.legend{text-align:center;color:var(--mut);margin:0 0 12px;font-size:1rem}
+.path{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.dot{width:46px;height:46px;border-radius:50%;border:3px solid var(--line);background:var(--card);color:var(--ink);font:800 1.1rem "Baloo 2",system-ui,sans-serif;cursor:pointer}
+.dot[disabled]{opacity:.45;cursor:not-allowed}
+.dot.on{background:var(--sun);border-color:var(--ink);color:#14213d}
+.dot.done{border-color:var(--mint)}
+.card{background:var(--card);border-radius:22px;padding:20px 16px;border:2px solid var(--line)}
+.meta{display:flex;justify-content:space-between;color:var(--mut)}
+.bar{height:10px;background:var(--key);border-radius:9px;margin:8px 0 16px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--mint);width:0;transition:width .3s}
+.task{text-align:center;font-size:1.25rem;color:var(--mut);margin:0 0 12px}
+.big{font-size:3.4rem;font-weight:800;text-align:center;line-height:1.15;margin-bottom:6px}
+.tag{display:inline-block;background:var(--sun);color:#14213d;border-radius:12px;padding:2px 14px;font-weight:800;font-size:1.4rem}
+.hint{text-align:center;color:var(--mut);margin:6px 0 12px}
+.word{text-align:center;font-size:1.8rem;font-weight:800;margin-bottom:4px}
+.sent{font-size:1.8rem;font-weight:800;text-align:center;line-height:1.3;margin:8px 0 16px}
+.cue{text-align:center;font-size:2.2rem;letter-spacing:4px;margin:0 0 4px}
+.lab{text-align:center;color:var(--mut);margin:6px 0 4px}
+.grp{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:8px}
+.inp2{font-size:1.6rem;margin-bottom:6px}
+.ex{margin-top:12px;padding:12px 14px;border-radius:14px;background:var(--key);text-align:left;font-size:1.05rem;line-height:1.35}
+.ex .b{font-weight:800}
+.ex .es{color:var(--mut);font-style:italic;margin-top:2px}
+.sent b{background:var(--sun);color:#14213d;border-radius:8px;padding:0 8px}
+input{width:100%;font:800 1.9rem "Baloo 2",system-ui,sans-serif;text-align:center;padding:10px;border:3px solid var(--ink);border-radius:14px;background:var(--card);color:var(--ink)}
+input.ok{border-color:var(--ok);color:var(--ok)}
+input.bad{border-color:var(--bad);color:var(--bad)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cols>div,.opts{display:flex;flex-direction:column;gap:10px}
+.chip{font:800 1.3rem "Baloo 2",system-ui,sans-serif;padding:12px 8px;border-radius:14px;border:3px solid var(--line);background:var(--key);color:var(--ink);cursor:pointer}
+.chip.sel{border-color:var(--ink);background:var(--sun);color:#14213d}
+.chip.good{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+.chip.wrong{background:var(--badbg);border-color:var(--bad);color:var(--bad)}
+.fb{min-height:32px;text-align:center;font-size:1.2rem;font-weight:700;margin:12px 0 0}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.go{display:block;width:100%;margin-top:12px;font:800 1.4rem "Baloo 2",system-ui,sans-serif;border:0;border-radius:16px;padding:12px 0;background:var(--sun);color:#14213d;cursor:pointer}
+.go.sec{background:var(--key);color:var(--ink)}
+button:focus-visible,input:focus-visible{outline:4px solid var(--mint);outline-offset:2px}
+.end{text-align:center}
+.stars{font-size:2.6rem;letter-spacing:6px}
+.end p{font-size:1.2rem;margin:8px 0 16px}
+[hidden]{display:none!important}
+.back{display:inline-block;margin:0 0 8px;color:var(--mut);font:700 1rem "Baloo 2",system-ui,sans-serif;text-decoration:none}
+.back:hover{color:var(--ink)}
+
+.estop{font-size:1.2rem;font-weight:700;text-align:center;line-height:1.3;margin:0 0 8px}
+.tn rect{fill:var(--card);stroke:var(--ink);stroke-width:2}
+.tn text{fill:var(--ink);font:700 14px "Baloo 2",system-ui,sans-serif}
+.tl{stroke:var(--ink);stroke-width:2;fill:none}
+.big2{font-size:2.3rem;font-weight:800;text-align:center;line-height:1.2;margin:4px 0 14px}
+</style>
+</head>
+<body>
+<main>
+<a class="back" href="index.html">← Hasiera</a>
+<h1>Eduki aditza</h1>
+<div class="path" id="path"></div>
+<section class="card" id="play">
+  <div class="meta"><span id="lname"></span><span id="count"></span></div>
+  <div class="bar"><i id="bar"></i></div>
+  <div id="stage"></div>
+  <div class="fb" id="fb" aria-live="polite"></div>
+  <div class="ex" id="ex" hidden></div>
+  <button class="go" id="go">Egiaztatu</button>
+</section>
+<section class="card end" id="end" hidden>
+  <div class="stars" id="stars"></div>
+  <h2 id="etitle"></h2>
+  <p id="etext"></p>
+  <button class="go" id="next"></button>
+  <button class="go sec" id="again">Maila errepikatu</button>
+</section>
+</main>
+<script>
+var PS=["nik","hark","guk","zuk","zuek","haiek"];
+var ES1=["daukat","dauka","daukagu","daukazu","daukazue","daukate"],EP=["dauzkat","dauzka","dauzkagu","dauzkazu","dauzkazue","dauzkate"];
+var US=["dut","du","dugu","duzu","duzue","dute"],UP=["ditut","ditu","ditugu","dituzu","dituzue","dituzte"];
+var SUF=["-t","(bukaerarik ez)","-gu","-zu","-zue","-te"];
+function F(p,pl){return pl?EP[p]:ES1[p]}
+function U(p,pl){return pl?UP[p]:US[p]}
+function acc(p,pl){return[nz(F(p,pl)),nz(U(p,pl))]}
+function both(p,pl){return F(p,pl)+" / "+U(p,pl)+" (ukan)"}
+function why(p,pl,obj){return "<b>"+both(p,pl)+"</b><br>Subjektua: <b>"+PS[p]+"</b> (NORK, -k) → bukaera "+SUF[p]+". Osagarri zuzena"+(obj?" («"+obj+"»)":"")+(pl?" plurala da → <b>-z-</b> (dauzka-) edo ditu-.":" singularra da → dauka- edo du-.")+"<br><i>EDUKI eta UKAN: biak baliozkoak.</i>"}
+var EX=[
+["Ainarak txano gorria ___.",1,0,"txano gorria"],["Zuek ba___ txikleak?",4,1,"txikleak"],["Guk ez ___ patineterik.",2,0,"patineterik"],["Nik motxilan komikiak ___.",0,1,"komikiak"],
+["Zuk futbolerako sarrera ___.",3,0,"sarrera"],["Haiek autoaren giltzak ___.",5,1,"giltzak"],["Nik etxean txakur txiki bat ___.",0,0,"txakur txiki bat"],["Josuk oporretako argazkiak ___.",1,1,"argazkiak"],
+["Zuek ez ___ oparirik.",4,0,"oparirik"],["Guk gozokiak ___.",2,1,"gozokiak"],["Zuk klaseko liburuak ___.",3,1,"liburuak"],["Futbolariek baloia ___.",5,0,"baloia"],
+["Nik hiru domina ___.",0,1,"hiru domina"],["Zuek etxean dortoka bat ___.",4,0,"dortoka bat"],["Zuk poltsikoan karta batzuk ___.",3,1,"karta batzuk"],["Txerriak zazpi txerrikume ___.",1,1,"zazpi txerrikume"],
+["Nik ez ___ motxilarik.",0,0,"motxilarik"],["Amak giltzak ___.",1,1,"giltzak"],["Zuek piruletak ___.",4,1,"piruletak"],["Guk ez ___ paperak.",2,1,"paperak"],
+["Nik etxean katu zuri bat ___.",0,0,"katu zuri bat"],["Gurasoek auto berria ___.",5,0,"auto berria"],["Nik liburutegiko txartela ___.",0,0,"liburutegiko txartela"]];
+function full(e){var f=F(e[1],e[2]);return e[0].replace("___","<b>"+(e[0].indexOf("ba___")>-1?f:f)+"</b>")}
+function fm(e){var a=acc(e[1],e[2]);if(e[0].indexOf("ba___")>-1)a=a.concat(a.map(function(x){return"ba"+x}));return a}
+function exs(type){return pick(EX,8).map(function(e,i){
+  var ty=type==="mix"?(i%2?"wr":"mc"):type,ok=exOk(full(e),both(e[1],e[2])),bad=exBad(why(e[1],e[2],e[3]));
+  if(ty==="wr")return{t:"wr",q:"Idatzi aditza (EDUKI edo UKAN)",s:'<div class="sent">'+e[0]+'</div>',a:fm(e),show:both(e[1],e[2]),ok:ok,bad:bad};
+  var c=F(e[1],e[2]),pool=[F(e[1],!e[2]),F((e[1]+1)%6,e[2]),F((e[1]+2)%6,e[2]),F((e[1]+3)%6,!e[2])];
+  return{t:"mc",q:"Aukeratu aditza (EDUKI)",s:'<div class="sent">'+e[0]+'</div>',o:o4(c,pool),a:c,ok:ok,bad:bad}})}
+function tabla(pl){var r=[],i;
+  for(i=0;i<2;i++)r.push({t:"mt",q:"Lotu pertsona eta EDUKI forma",p:pick([0,1,2,3,4,5],4).map(function(p){return[PS[p],F(p,pl)]}),});
+  for(i=0;i<3;i++){var p=ri(6);r.push({t:"mc",q:"Aukeratu EDUKI forma ("+(pl?"plurala":"singularra")+")",s:'<div class="big2">'+PS[p]+'</div>',o:o4(F(p,pl),EP.concat(ES1).filter(function(x){return x!==F(p,pl)})),a:F(p,pl),ok:exOk(PS[p]+" "+both(p,pl)),bad:exBad(why(p,pl,""))})}
+  for(i=0;i<3;i++){var q=ri(6);r.push({t:"wr",q:"Idatzi: EDUKI edo UKAN",s:'<div class="big2">'+PS[q]+'</div>',a:acc(q,pl),show:both(q,pl),ok:exOk(PS[q]+" "+both(q,pl)),bad:exBad(why(q,pl,""))})}
+  return shuf(r)}
+function sp(){return pick(EX,8).map(function(e){var c=F(e[1],e[2]),o=[F(e[1],0),F(e[1],1)];
+  return{t:"mc",q:"Singularra ala plurala?",s:'<div class="sent">'+e[0]+'</div>',o:o,a:c,ok:exOk(full(e),both(e[1],e[2])),bad:exBad(why(e[1],e[2],e[3]))}})}
+var G={key:"eduki1",levels:[
+ {n:"Singularra",gen:function(){return tabla(0)}},{n:"Plurala",gen:function(){return tabla(1)}},{n:"Singularra ala plurala?",gen:sp},
+ {n:"Esaldiak",gen:function(){return exs("mc")}},{n:"Idatzi aditza",gen:function(){return exs("wr")}},{n:"Erronka",gen:function(){return exs("mix")}}]};
+
+var $=function(i){return document.getElementById(i)};
+function shuf(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function ri(k){return Math.floor(Math.random()*k)}
+function nz(s){return s.toLowerCase().replace(/[\s.,!?¡¿\-'’]/g,"")}
+function pick(a,n){return shuf(a.slice()).slice(0,n)}
+function o4(c,pool,n){var o=[c];shuf(pool.slice()).forEach(function(x){if(o.length<(n||4)&&o.indexOf(x)<0)o.push(x)});return shuf(o)}
+function exOk(b,es){return '<div class="b">'+b+'</div>'+(es?'<div class="es">'+es+'</div>':'')}
+function exBad(t){return "<b>Zergatia:</b><br>"+t}
+var TOTAL=8,PASS=6,save={open:1,stars:{}},lv=0,qi=0,hits=0,checked=false,chk=null,items=[];
+try{var sv=JSON.parse(localStorage.getItem(G.key));if(sv&&sv.open)save=sv}catch(e){}
+function persist(){try{localStorage.setItem(G.key,JSON.stringify(save))}catch(e){}}
+function drawPath(){
+  var p=$("path");p.innerHTML="";
+  G.levels.forEach(function(L,i){
+    var b=document.createElement("button");
+    b.className="dot"+(i===lv?" on":"")+(save.stars[i]?" done":"");
+    b.textContent=i+1;b.title=L.n;b.setAttribute("aria-label",(i+1)+". maila: "+L.n);
+    b.disabled=i+1>save.open;b.onclick=function(){start(i)};p.appendChild(b);
+  });
+}
+function start(i){
+  lv=i;qi=0;hits=0;$("play").hidden=false;$("end").hidden=true;
+  items=G.levels[i].gen();while(items.length<TOTAL)items.push(items[items.length%Math.max(items.length,1)]);
+  $("lname").textContent=(i+1)+". maila: "+G.levels[i].n;drawPath();ask();
+}
+function setFb(t,c){var f=$("fb");f.textContent=t;f.className="fb"+(c?" "+c:"")}
+function ask(){
+  checked=false;chk=null;setFb("","");$("ex").hidden=true;$("ex").innerHTML="";
+  $("count").textContent=(qi+1)+" / "+TOTAL;$("bar").style.width=(qi/TOTAL*100)+"%";
+  var it=items[qi],g=$("go");g.textContent="Egiaztatu";
+  ({mc:mc,wr:wr,mt:mt})[it.t](it);
+  g.hidden=!(it.t==="wr");
+}
+function done(ok,msg,html){
+  if(checked)return;checked=true;if(ok)hits++;
+  setFb(msg,ok?"ok":"bad");
+  if(html){var e=$("ex");e.innerHTML=html;e.hidden=false}
+  var g=$("go");g.hidden=false;g.textContent=qi+1>=TOTAL?"Emaitza ikusi":"Hurrengoa";
+  $("bar").style.width=((qi+1)/TOTAL*100)+"%";
+}
+function go(){if(checked){qi++;qi>=TOTAL?finish():ask()}else if(chk)chk()}
+function mc(it){
+  $("stage").innerHTML='<p class="task">'+it.q+'</p>'+(it.s||"")+'<div class="opts" id="opts"></div>';
+  var o=$("opts");
+  it.o.forEach(function(t){
+    var b=document.createElement("button");b.className="chip";b.textContent=t;
+    b.onclick=function(){
+      if(checked)return;var ok=t===it.a;b.className="chip "+(ok?"good":"wrong");
+      if(!ok)Array.prototype.forEach.call(o.children,function(k,i){if(it.o[i]===it.a)k.className="chip good"});
+      done(ok,ok?"Oso ondo!":"Zuzena: "+it.a,ok?it.ok:it.bad);
+    };o.appendChild(b);
+  });
+}
+function wr(it){
+  $("stage").innerHTML='<p class="task">'+it.q+'</p>'+(it.s||"")+'<input id="inp" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Erantzuna">';
+  var inp=$("inp");setTimeout(function(){inp.focus()},50);
+  chk=function(){
+    var v=nz(inp.value);if(!v)return setFb("Idatzi zure erantzuna.","");
+    var ok=it.a.indexOf(v)>-1;inp.className=ok?"ok":"bad";inp.readOnly=true;
+    done(ok,ok?"Oso ondo!":"Zuzena: "+it.show,ok?it.ok:it.bad);
+  };
+}
+function mt(it){
+  var n=it.p.length,right=shuf(it.p.map(function(_,i){return i}));
+  $("stage").innerHTML='<p class="task">'+(it.q||"Lotu bakoitza bere bikotearekin")+'</p><div class="cols"><div id="cl"></div><div id="cr"></div></div>';
+  var sl=null,sr=null,rest=n,bad=0,flash=false,bl={},br={};
+  function mk(i,side,txt){
+    var b=document.createElement("button");b.className="chip";b.textContent=txt;
+    b.onclick=function(){
+      if(b.disabled||flash||checked)return;
+      if(side==="l"){if(sl!==null)bl[sl].classList.remove("sel");sl=i}else{if(sr!==null)br[sr].classList.remove("sel");sr=i}
+      b.classList.add("sel");
+      if(sl!==null&&sr!==null){
+        var x=bl[sl],y=br[sr];
+        if(sl===sr){x.className=y.className="chip good";x.disabled=y.disabled=true;rest--;
+          if(!rest){var h=it.p.map(function(q){return q[0]+" = "+q[1]}).join("<br>");
+            done(bad<=1,bad?(bad<=1?"Ia-ia! Akats bat.":"Akats gehiegi."):"Oso ondo!",'<div class="es">'+h+'</div>')}
+        }else{bad++;flash=true;x.classList.add("wrong");y.classList.add("wrong");
+          setTimeout(function(){x.className=y.className="chip";flash=false},550)}
+        sl=sr=null;
+      }
+    };(side==="l"?bl:br)[i]=b;$(side==="l"?"cl":"cr").appendChild(b);
+  }
+  it.p.forEach(function(q,i){mk(i,"l",q[0])});right.forEach(function(i){mk(i,"r",it.p[i][1])});
+}
+function finish(){
+  var won=hits>=PASS,st=hits>=TOTAL?3:hits>=7?2:won?1:0,last=lv===G.levels.length-1;
+  $("play").hidden=true;$("end").hidden=false;
+  $("stars").textContent="★".repeat(st)+"☆".repeat(3-st);
+  $("etitle").textContent=won?"Maila gaindituta!":"Ia-ia lortu duzu";
+  $("etext").textContent=TOTAL+"tik "+hits+" asmatu dituzu."+(won?"":" Gainditzeko "+PASS+" behar dituzu. Saiatu berriro!");
+  if(won){save.stars[lv]=Math.max(save.stars[lv]||0,st);if(!last&&save.open<lv+2)save.open=lv+2;persist();
+    if(last)$("etext").textContent+=" Ibilbide osoa osatu duzu!"}
+  var nx=$("next");nx.hidden=!(won&&!last);nx.textContent="Joan "+(lv+2)+". mailara";nx.onclick=function(){start(lv+1)};
+  drawPath();
+}
+$("go").onclick=go;$("again").onclick=function(){start(lv)};
+document.addEventListener("keydown",function(e){
+  if($("play").hidden||e.key!=="Enter")return;
+  if(e.target.tagName==="INPUT"||e.target===document.body){e.preventDefault();go()}
+});
+start(Math.min(save.open,G.levels.length)-1);
+
+</script>
+</body>
+</html>
