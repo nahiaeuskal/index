@@ -135,6 +135,26 @@ h1 {
   padding: 8px 26px;
   border-radius: 14px;
 }
+
+/* --- Menua sarean: pantailan aukera guztiak ikusteko --- */
+main{max-width:1000px;padding:20px 14px 28px}
+h1{font-size:1.8rem}
+.sub{font-size:1.1rem;margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.game{margin:0;padding:16px 10px;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:150px}
+.ico{font-size:2.4rem;margin-bottom:4px}
+.game h2{font-size:1.2rem;line-height:1.15}
+.game p{font-size:.95rem;margin:4px 0 0}
+.btn{display:none}
+@media (max-width:640px){
+  .grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .game{min-height:130px;padding:12px 8px}
+  .ico{font-size:2.1rem}
+  .game h2{font-size:1.05rem}
+  .game p{font-size:.85rem}
+}
+.group{margin:0 0 6px}
+.group h3{font-size:1.1rem;font-weight:800;color:var(--mut);margin:14px 4px 8px;text-align:left}
 </style>
 </head>
 
@@ -144,62 +164,65 @@ h1 {
   <h1>Euskara jolasak</h1>
   <p class="sub">Aukeratu jolas bat</p>
 
-  <!-- JOKOA 1: ZENBAKIAK -->
-  <a class="game" href="zenbakiak.html">
-    <div class="ico">🔢</div>
-    <h2>Zenbakiak</h2>
-    <p>Zenbakiak euskaraz, 1etik 100era</p>
-    <span class="btn">Jolastu</span>
-  </a>
-
-  <!-- JOKOA 2: NON, NONGO, NONGOA -->
-  <a class="game" href="nongo.html">
-    <div class="ico">📍</div>
-    <h2>Non, Nongo, Nongoa</h2>
-    <p>Deklinabidea</p>
-    <span class="btn">Jolastu</span>
-  </a>
-
-  <!-- JOKOA 3: IZAN ETA UKAN -->
+  <section class="group">
+  <h3>Aditzak</h3>
+  <div class="grid">
   <a class="game" href="izan-ukan.html">
     <div class="ico">💬</div>
     <h2>Izan eta Ukan</h2>
     <p>Aditza</p>
     <span class="btn">Jolastu</span>
   </a>
-
-  <!-- JOKOA 4: HIZTEGIA -->
-  <a class="game" href="hiztegia.html">
-    <div class="ico">📖</div>
-    <h2>Hiztegia</h2>
-    <p>Hitzak eta itzulpenak</p>
-    <span class="btn">Jolastu</span>
-  </a>
-
-
-  <!-- JOKOA 5: ASTEKO EGUNAK, HILABETEAK ETA DATAK -->
-  <a class="game" href="egunak.html">
-    <div class="ico">📅</div>
-    <h2>Egunak, hilabeteak eta datak</h2>
-    <p>Hiztegia eta deklinabidea</p>
-    <span class="btn">Jolastu</span>
-  </a>
-
-  <!-- JOKOA 6: NOREN ETA NORENA -->
-  <a class="game" href="noren.html">
-    <div class="ico">👪</div>
-    <h2>Noren eta Norena</h2>
-    <p>Deklinabidea</p>
-    <span class="btn">Jolastu</span>
-  </a>
-
-  <!-- JOKOA 7: EDUKI -->
   <a class="game" href="eduki.html">
     <div class="ico">🎒</div>
     <h2>Eduki</h2>
     <p>Aditza</p>
     <span class="btn">Jolastu</span>
   </a>
+  </div>
+  </section>
+
+  <section class="group">
+  <h3>Zenbakiak, egunak eta hilabeteak</h3>
+  <div class="grid">
+  <a class="game" href="zenbakiak.html">
+    <div class="ico">🔢</div>
+    <h2>Zenbakiak</h2>
+    <p>Zenbakiak euskaraz, 1etik 100era</p>
+    <span class="btn">Jolastu</span>
+  </a>
+  <a class="game" href="egunak.html">
+    <div class="ico">📅</div>
+    <h2>Egunak, hilabeteak eta datak</h2>
+    <p>Hiztegia eta deklinabidea</p>
+    <span class="btn">Jolastu</span>
+  </a>
+  <a class="game" href="hiztegia.html">
+    <div class="ico">📖</div>
+    <h2>Hiztegia</h2>
+    <p>Hitzak eta itzulpenak</p>
+    <span class="btn">Jolastu</span>
+  </a>
+  </div>
+  </section>
+
+  <section class="group">
+  <h3>Deklinabidea</h3>
+  <div class="grid">
+  <a class="game" href="nongo.html">
+    <div class="ico">📍</div>
+    <h2>Non, Nongo, Nongoa</h2>
+    <p>Deklinabidea</p>
+    <span class="btn">Jolastu</span>
+  </a>
+  <a class="game" href="noren.html">
+    <div class="ico">👪</div>
+    <h2>Noren eta Norena</h2>
+    <p>Deklinabidea</p>
+    <span class="btn">Jolastu</span>
+  </a>
+  </div>
+  </section>
 
 </main>
 </body>
